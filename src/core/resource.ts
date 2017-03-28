@@ -1,7 +1,7 @@
 namespace engine.res {
 
     var __cache  = {};
-
+    var ASSETS_PATH = "assets/";
     var __imageConfig = {
 
         "images": [
@@ -52,7 +52,7 @@ namespace engine.res {
             constructor(name: string) {
                 this.bitmapData = document.createElement("img");
                 this.bitmapData.src = "Close_s.png";
-                this.url = name;
+                this.url = ASSETS_PATH + name;
             }
 
             public load() {
