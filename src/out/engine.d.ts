@@ -45,15 +45,20 @@ declare namespace engine {
 }
 declare namespace engine.res {
     function loadConfig(): void;
-    function loadRes(name: any): void;
-    function getRes(name: string): any;
     class ImageResource {
-        private url;
+        id: string;
         bitmapData: HTMLImageElement;
         width: number;
         height: number;
-        constructor(name: string);
-        load(): void;
+        constructor(name: string, _width: number, _height: number);
+    }
+    class Resourse {
+        resourses: ImageResource[];
+        private static Res;
+        constructor();
+        static getInstance(): Resourse;
+        getRes(id: string): ImageResource;
+        initial(): void;
     }
 }
 declare namespace engine {

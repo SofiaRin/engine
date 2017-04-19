@@ -9,6 +9,7 @@ namespace engine {
         let lastNow = Date.now();
         let renderer = new CanvasRenderer(stage, context2D);
         
+        
         let frameHandler = () => {
             let now = Date.now();
             let deltaTime = now - lastNow;
@@ -132,28 +133,20 @@ namespace engine {
             
       
             if (bitmap.visible) {
-                bitmap.texture.load();
-                /*
-                if (bitmap.bitmap_cache == null) {
-                    var image = new Image();
-                    image.src = bitmap.src;
-
-
-                    image.onload = () => {
-                        this.context2D.drawImage(image, 0, 0);
-                        bitmap.bitmap_cache = image;
-                        console.log(bitmap.bitmap_cache.width, bitmap.bitmap_cache.height);
-                        bitmap.width = image.width;
-                        bitmap.height = image.height;
-
+             if (bitmap.texture != null) {
+                if (bitmap.texture.bitmapData == null) {
+                    let img = new Image();
+                    img.src = "assets/" + bitmap.texture.id;
+                    img.onload = () => {
+                        this.context2D.drawImage(img, 0, 0);
+                        bitmap.texture.bitmapData = img;
                     }
-                } 
-                else {
-
-                    this.context2D.drawImage(bitmap.bitmap_cache, 0, 0);
+                } else {
+                    this.context2D.drawImage(bitmap.texture.bitmapData, 0, 0);
                 }
-                */
-                 this.context2D.drawImage(bitmap.texture.bitmapData, 0, 0);
+            } else {
+                console.log("no bitmap resource find");
+            }
             }
 
         }
@@ -161,7 +154,7 @@ namespace engine {
         
 
         renderTextField(textField: TextField) {
-
+            
             function draw_long_text(longtext, cxt, begin_width, begin_height) {
                 var linelenght = 20;
                 var text = "";

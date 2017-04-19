@@ -183,40 +183,116 @@ var engine;
             });
         }
         res.loadConfig = loadConfig;
-        function loadRes(name) {
-            var resource = getRes(name);
-            resource.load();
-        }
-        res.loadRes = loadRes;
-        function getRes(name) {
-            if (__cache[name]) {
-                console.log("same cache !");
-                return __cache[name];
+        /*
+        export function loadRes(name) {
+                var resource = getRes(name);
+                resource.load();
             }
-            else {
-                __cache[name] = new ImageResource(name);
-                return __cache[name];
+    
+            export function getRes(name: string) {
+                if (__cache[name]) {
+                    console.log("same cache !")
+                    return __cache[name]
+                }
+                else {
+                    __cache[name] = new ImageResource(name);
+                    return __cache[name];
+                }
             }
-        }
-        res.getRes = getRes;
+            */
+        var imageJason = [
+            //path:
+            { id: "Accept.png", width: 120, height: 60 },
+            { id: "Close.png", width: 120, height: 60 },
+            { id: "Close_s.png", width: 30, height: 30 },
+            { id: "DialogueBg.png", width: 260, height: 180 },
+            { id: "Finish.png", width: 120, height: 60 },
+            { id: "Kill.png", width: 120, height: 60 },
+            { id: "idel1.png", width: 60, height: 93 },
+            { id: "idel1_L.png", width: 60, height: 93 },
+            { id: "idel1_R.png", width: 60, height: 93 },
+            { id: "idel2.png", width: 60, height: 93 },
+            { id: "idel2_L.png", width: 60, height: 93 },
+            { id: "idel2_R.png", width: 60, height: 93 },
+            { id: "idel3.png", width: 60, height: 93 },
+            { id: "idel3_L.png", width: 60, height: 93 },
+            { id: "idel3_R.png", width: 60, height: 93 },
+            { id: "idel4.png", width: 60, height: 93 },
+            { id: "idel4_L.png", width: 60, height: 93 },
+            { id: "idel4_R.png", width: 60, height: 93 },
+            { id: "move1.png", width: 60, height: 93 },
+            { id: "move1_L.png", width: 60, height: 93 },
+            { id: "move1_R.png", width: 60, height: 93 },
+            { id: "move2.png", width: 60, height: 93 },
+            { id: "move2_L.png", width: 60, height: 93 },
+            { id: "move2_R.png", width: 60, height: 93 },
+            { id: "move3.png", width: 60, height: 93 },
+            { id: "move3_L.png", width: 60, height: 93 },
+            { id: "move3_R.png", width: 60, height: 93 },
+            { id: "move4.png", width: 60, height: 93 },
+            { id: "move4_L.png", width: 60, height: 93 },
+            { id: "move4_R.png", width: 60, height: 93 },
+            { id: "npc_0_nullIcon.png", width: 161, height: 278 },
+            { id: "npc_0_taskAcceptable.png", width: 161, height: 278 },
+            { id: "npc_0_taskDuring.png", width: 161, height: 278 },
+            { id: "npc_0_taskFinish.png", width: 161, height: 278 },
+            { id: "npc_1_nullIcon.png", width: 161, height: 278 },
+            { id: "npc_1_taskAcceptable.png", width: 161, height: 278 },
+            { id: "npc_1_taskDuring.png", width: 161, height: 278 },
+            { id: "npc_1_taskFinish.png", width: 161, height: 278 },
+            { id: "S_FuMO25.png", width: 190, height: 190 },
+            { id: "S_Prinz Eugen.jpg", width: 261, height: 380 },
+            { id: "S_Setuper.png", width: 190, height: 190 },
+            { id: "S_SKC34.png", width: 190, height: 190 },
+            { id: "S_Watcher.png", width: 190, height: 190 },
+            { id: "tile_1.png", width: 64, height: 64 },
+            { id: "tile_2.png", width: 64, height: 64 },
+        ];
         var ImageResource = (function () {
-            function ImageResource(name) {
-                this.bitmapData = document.createElement("img");
-                this.bitmapData.src = "Close_s.png";
-                this.url = ASSETS_PATH + name;
+            function ImageResource(name, _width, _height) {
+                this.width = _width;
+                this.height = _height;
+                this.id = name;
             }
-            ImageResource.prototype.load = function () {
-                var _this = this;
-                var realResource = document.createElement("img");
-                realResource.src = this.url;
-                realResource.onload = function () {
-                    _this.bitmapData = realResource;
-                    console.log(realResource.src + "Has Loaded");
-                };
-            };
             return ImageResource;
         }());
         res.ImageResource = ImageResource;
+        var Resourse = (function () {
+            function Resourse() {
+                ;
+            }
+            Resourse.getInstance = function () {
+                if (Resourse.Res == null) {
+                    Resourse.Res = new Resourse();
+                    Resourse.Res.resourses = new Array();
+                    return Resourse.Res;
+                }
+                else {
+                    return Resourse.Res;
+                }
+            };
+            Resourse.prototype.getRes = function (id) {
+                console.log(id.match("null"));
+                if (id.match("null")) {
+                    console.log("not find " + id + " in imageJason"); //此处可替换为“若没有该id，则添加至resource数组”
+                    return null;
+                }
+                for (var i = 0; i < this.resourses.length; i++) {
+                    if (this.resourses[i].id.match(id)) {
+                        return this.resourses[i];
+                    }
+                }
+            };
+            Resourse.prototype.initial = function () {
+                var _this = this;
+                imageJason.forEach(function (x) {
+                    var y = new ImageResource(x.id, x.width, x.height);
+                    _this.resourses.push(y);
+                });
+            };
+            return Resourse;
+        }());
+        res.Resourse = Resourse;
     })(res = engine.res || (engine.res = {}));
 })(engine || (engine = {}));
 var engine;
@@ -330,7 +406,7 @@ var engine;
     engine.TextField = TextField;
     function createBitmapByName(name) {
         var result = new engine.BitMap();
-        var texture = engine.res.getRes("assets/" + name);
+        var texture = engine.res.Resourse.getInstance().getRes(name);
         result.texture = texture;
         return result;
     }
@@ -338,9 +414,7 @@ var engine;
     var BitMap = (function (_super) {
         __extends(BitMap, _super);
         function BitMap() {
-            var _this = _super.call(this, "Bitmap") || this;
-            _this.texture = new engine.res.ImageResource("Close_s.png");
-            return _this;
+            return _super.call(this, "Bitmap") || this;
         }
         BitMap.prototype.hitTest = function (_relativeX, _relativeY) {
             if (this.touchEnabled) {
@@ -630,29 +704,24 @@ var engine;
         };
         CanvasRenderer.prototype.renderBitmap = function (bitmap) {
             // this.context2D.drawImage(bitmap.image, 0, 0);
+            var _this = this;
             if (bitmap.visible) {
-                bitmap.texture.load();
-                /*
-                if (bitmap.bitmap_cache == null) {
-                    var image = new Image();
-                    image.src = bitmap.src;
-
-
-                    image.onload = () => {
-                        this.context2D.drawImage(image, 0, 0);
-                        bitmap.bitmap_cache = image;
-                        console.log(bitmap.bitmap_cache.width, bitmap.bitmap_cache.height);
-                        bitmap.width = image.width;
-                        bitmap.height = image.height;
-
+                if (bitmap.texture != null) {
+                    if (bitmap.texture.bitmapData == null) {
+                        var img_1 = new Image();
+                        img_1.src = "assets/" + bitmap.texture.id;
+                        img_1.onload = function () {
+                            _this.context2D.drawImage(img_1, 0, 0);
+                            bitmap.texture.bitmapData = img_1;
+                        };
+                    }
+                    else {
+                        this.context2D.drawImage(bitmap.texture.bitmapData, 0, 0);
                     }
                 }
                 else {
-
-                    this.context2D.drawImage(bitmap.bitmap_cache, 0, 0);
+                    console.log("no bitmap resource find");
                 }
-                */
-                this.context2D.drawImage(bitmap.texture.bitmapData, 0, 0);
             }
         };
         CanvasRenderer.prototype.renderTextField = function (textField) {

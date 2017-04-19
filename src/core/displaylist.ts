@@ -172,7 +172,17 @@ namespace engine {
 
         }
     }
+    export function createBitmapByName(name: string): engine.BitMap {
+        var result = new engine.BitMap();
 
+        var texture = engine.res.Resourse.getInstance().getRes(name);
+        result.texture = texture;
+
+        
+
+        return result;
+    }
+    
     export class BitMap extends DisplayObject {
         src: string;
 
